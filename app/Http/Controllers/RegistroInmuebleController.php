@@ -23,18 +23,22 @@ class RegistroInmuebleController extends Controller
             'descripcion' => 'required|string',
             'precio' => 'required|numeric|min:0',
             'tipo' => 'required|in:casa,departamento,terreno',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120', // Máximo 5MB
         ]);
-
-        RegistroInmueble::create([
-            'user_id' => Auth::id(), // Se asocia al usuario autenticado
-            'nombre' => $request->nombre,
-            'direccion' => $request->direccion,
-            'ciudad' => $request->ciudad,
-            'descripcion' => $request->descripcion,
-            'precio' => $request->precio,
-            'tipo' => $request->tipo,
-        ]);
-
+    
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+    
+        // Verifica si la imagen está presente y es válida
+        if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
+            $path = $request->file('imagen')->store('photos', 'public'); // Guarda en storage/app/public/photos
+            $data['imagen'] = $path;
+        } else {
+            return back()->with('error', 'Error al subir la imagen.');
+        }
+    
+        RegistroInmueble::create($data);
+    
         return redirect()->route('dashboard')->with('success', 'Inmueble creado con éxito.');
     }
 }

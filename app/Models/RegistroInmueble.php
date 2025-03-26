@@ -9,7 +9,7 @@ class RegistroInmueble extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'nombre', 'direccion', 'ciudad', 'descripcion', 'precio', 'tipo'
+        'user_id', 'nombre', 'direccion', 'imagen','ciudad', 'descripcion', 'precio', 'tipo'
     ];
 
     // Relación con User

@@ -16,6 +16,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+            <!-- Barra de navegación siempre visible -->
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -29,7 +30,9 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <!-- Mostrar contenido diferente según autenticación -->
+
+                    {{ $slot }} <!-- Contenido normal para usuarios logueados -->
             </main>
         </div>
     </body>
