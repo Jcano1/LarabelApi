@@ -13,7 +13,7 @@ class PageInmuebleController extends Controller
      */
     public function show(RegistroInmueble $inmueble)
     {
-        // Verifica si la imagen existe, si no muestra un placeholder
+
         $imagen = Storage::disk('public')->exists($inmueble->imagen) 
                 ? asset('storage/'.$inmueble->imagen) 
                 : asset('images/placeholder-inmueble.jpg');

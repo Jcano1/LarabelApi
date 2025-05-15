@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens; // 👈 Importar Sanctum
 
 class User extends Authenticatable
 {
-    
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable; // 👈 Agregar HasApiTokens
 
     /**
      * The attributes that are mass assignable.
@@ -46,70 +45,44 @@ class User extends Authenticatable
         ];
     }
 
-    public function roles(){
-        return $this->belongsToMany(Role::class,'user_roles');
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
     }
 
     public function authorizeRoles($roles)
-
     {
-
         if ($this->hasAnyRole($roles)) {
-
             return true;
-
         }
 
         abort(401, 'Non authorized action.');
-
     }
 
     public function hasAnyRole($roles)
-
     {
-
         if (is_array($roles)) {
-
             foreach ($roles as $role) {
-
                 if ($this->hasRole($role)) {
-
                     return true;
-
                 }
-
             }
-
         } else {
-
             if ($this->hasRole($roles)) {
-
                 return true;
-
             }
-
         }
 
         return false;
-
     }
 
     public function hasRole($role)
-
     {
-
-        if ($this->roles()->where('name', $role)->first()) {
-
-            return true;
-
-        }
-
-        return false;
-
+        return $this->roles()->where('name', $role)->exists();
     }
-    public function isAdmin()
-{
-    return $this->roles()->where('name', 'Admin')->exists();
-}
 
+    public function isAdmin()
+    {
+        return $this->roles()->where('name', 'Admin')->exists();
+    }
 }

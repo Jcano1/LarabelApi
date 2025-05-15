@@ -40,7 +40,6 @@ Route::get('/EditInmueble', function () {
 
 Route::get('/GestionarUsuarios', function () {
     $users = User::all();
-
     return view('GestionarUsuarios')->with('users', $users);
 })->middleware(['auth', 'verified'])->middleware('admin')->name('GestionarUsuarios');
 
@@ -53,7 +52,6 @@ Route::put('/inmuebles/{inmueble}', [EditInmuebleController::class, 'update'])->
 Route::delete('/inmuebles/{inmueble}', [DeleteInmuebleController::class, 'destroy'])->name('inmuebles.destroy');
 Route::get('/registro-inmueble/create', [RegistroInmuebleController::class, 'create'])->name('registro-inmueble.create');
 Route::post('/registro-inmueble', [RegistroInmuebleController::class, 'store'])->name('registro-inmueble.store');
-
 Route::get('/inmuebles/{inmueble}', [PageInmuebleController::class, 'show'])->name('Page');
 
 

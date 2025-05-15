@@ -51,7 +51,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
+        $token = Auth::user()->createToken('api-Carrito')->plainTextToken;
+        session(['api_token' => $token]);
         return redirect(route('dashboard', absolute: false));
     }
 }

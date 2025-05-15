@@ -50,4 +50,33 @@
             </div>
         </div>
     </div>
+    <button onclick="AnadirCarrito()">Haz clic aquí</button>
+
+    <script>
+        console.log(window.apiToken+)
+        function AnadirCarrito() {
+            fetch('http://127.0.0.1:8000/api/Carrito', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': window.apiToken,
+                },
+                body: {
+                    user_id:'{{ auth()->user()->id }}',
+                    ContenidoCarrito:'{{ $inmueble->id }}',
+                },
+
+            })
+            .then(response=>response.json())
+            .then(data => {
+                console.log('Success:', data);
+                
+                alert('Inmueble añadido al carrito');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error al añadir el inmueble al carrito');
+            });
+        }
+    </script>
 </x-app-layout>
