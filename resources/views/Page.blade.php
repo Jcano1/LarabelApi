@@ -12,9 +12,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
                 <!-- Imagen principal -->
                 <div class="md:col-span-2">
-                    <img src="{{ $imagen }}" 
-                         alt="Imagen del inmueble"
-                         class="w-96 h-96 object-cover rounded-lg shadow-md">
+                    <img src="{{ $imagen }}" alt="Imagen del inmueble"
+                        class="w-96 h-96 object-cover rounded-lg shadow-md">
                 </div>
 
                 <!-- Sección izquierda -->
@@ -50,33 +49,74 @@
             </div>
         </div>
     </div>
-    <button onclick="AnadirCarrito()">Haz clic aquí</button>
+    <button id="buttonAnadorCarrito">Haz clic aquí</button>
 
     <script>
-        console.log(window.apiToken+)
+        console.log(window.apiToken)
         function AnadirCarrito() {
-            fetch('http://127.0.0.1:8000/api/Carrito', {
+            console.log('{{ auth()->user()->id }}')
+            console.log('{{ $inmueble->id }}')
+            fetch('/api/carrito', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': window.apiToken,
+                    'Authorization': `Bearer ${window.apiToken}`
                 },
-                body: {
-                    user_id:'{{ auth()->user()->id }}',
-                    ContenidoCarrito:'{{ $inmueble->id }}',
+                body: `{
+                
+                    "user_id": {{ auth()->user()->id }},
+                    "ContenidoCarrito": "{{ $inmueble->id }}"
+            
+                }`,
+
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message == 'El usuario ya tiene un carrito activo') {
+                        fetch(`/api/carrito/${data.data.carrito_id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.apiToken}`
+                            },
+                            body: `{
+                
+                    "user_id": {{ auth()->user()->id }},
+                    "ContenidoCarrito": "{{ $inmueble->id }}"
+            
+                }`,
+
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data)
+                            })
+                    }
+                    console.log('Respuesta del servidor:', data.message);
+
+                    console.log('Success:', data.data.carrito_id);
+
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error al añadir el inmueble al carrito');
+                });
+        }
+        var añadirCarrito = document.getElementById('buttonAnadorCarrito');
+        añadirCarrito.addEventListener('click', function () {
+            AnadirCarrito();
+        });
+    </script>
+    <script>
+        var Dueño_id="{{ $inmueble->user_id }}"
+        fetch(`/api/carrito/${Dueño_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${window.apiToken}`
                 },
 
             })
-            .then(response=>response.json())
-            .then(data => {
-                console.log('Success:', data);
-                
-                alert('Inmueble añadido al carrito');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Error al añadir el inmueble al carrito');
-            });
-        }
+        console.log("{{ $inmueble->user_id }}")
     </script>
 </x-app-layout>
