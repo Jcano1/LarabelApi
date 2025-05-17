@@ -28,15 +28,25 @@ class CarritoComprasController extends Controller
 
     public function store(StoreCarritoComprasRequest $request)
     {
-
         $validated = $request->validated();
-        $Carritos=CarritoCompras::create($validated);
+    
+        // Buscar carrito existente por user_id
+        $existingCarrito = CarritoCompras::where('user_id', $validated['user_id'])->first();
+        if ($existingCarrito) {
+            return response()->json([
+                'message' => 'El usuario ya tiene un carrito asignado.',
+                'data' => $existingCarrito
+            ], 200); // OK, pero indicando que no se creó uno nuevo
+        }
+    
+        $Carritos = CarritoCompras::create($validated);
         return response()->json([
-        'message'=>'Book created successfully',
-        'data'=>$Carritos
-        ],201);
-
+            'message' => 'Carrito creado exitosamente',
+            'data' => $Carritos
+        ], 201);
     }
+    
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -50,20 +60,23 @@ class CarritoComprasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($user_id)
     {
-        $Carrito=CarritoCompras::find($id);
-        if($Carrito){
+        $Carrito = CarritoCompras::where('user_id', $user_id)->first();
+    
+        if (is_null($Carrito)) {
             return response()->json([
-            'message'=>'Book found successfully',
-            'data'=>$Carrito
-            ],200);
-        }else{
-            return response()->json([
-            'message'=>'Book not found',
-            ],404);
+                'message' => 'Carrito no encontrado',
+            ], 404);
         }
+    
+        return response()->json([
+            'message' => 'Carrito encontrado exitosamente',
+            'data' => $Carrito
+        ], 200);
     }
+    
+    
 
     /**
      * Show the form for editing the specified resource.

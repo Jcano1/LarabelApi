@@ -23,6 +23,12 @@
                         <x-nav-link :href="route('GestionarInmuebles.blade')" :active="request()->routeIs('GestionarInmuebles.blade')">
                             Gestionar mis Inmuebles
                         </x-nav-link>
+                        <x-nav-link :href="route('Carrito.View')" :active="request()->routeIs('Carrito.View')">
+                            Mi carrito
+                        </x-nav-link>
+                        <x-nav-link :href="route('Ventas.View')" :active="request()->routeIs('Ventas.View')">
+                            Mis Ventas
+                        </x-nav-link>
                         @if(auth()->user()->isAdmin()) <!-- Solo muestra este enlace si el usuario es administrador -->
                             <x-nav-link :href="route('GestionarUsuarios')" :active="request()->routeIs('GestionarUsuarios')">
                                 Gestionar Usuarios

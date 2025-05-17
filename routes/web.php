@@ -43,7 +43,13 @@ Route::get('/GestionarUsuarios', function () {
     return view('GestionarUsuarios')->with('users', $users);
 })->middleware(['auth', 'verified'])->middleware('admin')->name('GestionarUsuarios');
 
+Route::get('/CarritoView', function () {
+    return view('CarritoView');
+})->middleware(['auth', 'verified'])->name('Carrito.View');
 
+Route::get('/VentasView', function () {
+    return view('VentasView');
+})->middleware(['auth', 'verified'])->name('Ventas.View');
 
 Route::get('/inmuebles/{inmueble}/editar', [EditInmuebleController::class, 'edit'])->name('inmuebles.edit');
 Route::put('/User/{user}', [GestionAdminController::class, 'GestionarAdmin'])->middleware('admin')->name('User.Admin');

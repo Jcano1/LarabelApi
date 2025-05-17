@@ -40,7 +40,7 @@
                 <p class="text-gray-600">No hay inmuebles disponibles en este momento.</p>
                 @auth
                     <a href="{{ route('CreateInmueble.blade') }}" 
-                       class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-md">
+                       class="mt-4 inline-block bg-blue-600 text-black px-4 py-2 rounded-md">
                         Crear nuevo inmueble
                     </a>
                 @else

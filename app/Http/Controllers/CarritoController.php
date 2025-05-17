@@ -65,9 +65,10 @@ class CarritoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($user_id)
     {
-        $Carrito = Carrito::find($id);
+        $Carrito = Carrito::where('user_id', $user_id)->first();
+    
         if ($Carrito) {
             return response()->json([
                 'message' => 'Book found successfully',
@@ -79,6 +80,7 @@ class CarritoController extends Controller
             ], 404);
         }
     }
+    
 
     /**
      * Show the form for editing the specified resource.
