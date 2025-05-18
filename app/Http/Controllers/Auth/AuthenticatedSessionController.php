@@ -42,8 +42,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
-        $request->user()->currentAccessToken()->delete();
         session()->forget('api_token');
         return redirect('/');
     }

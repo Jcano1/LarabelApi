@@ -19,6 +19,9 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('carrito', CarritoController::class);
+    Route::post('InfoProductosCarrito', [CarritoController::class, 'GetDatos']);
+    Route::post('InfoProductosVenta', [CarritoController::class, 'GetDatos']);
     Route::apiResource('CarritoCompras', CarritoComprasController::class);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });

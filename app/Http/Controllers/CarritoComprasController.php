@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCarritoComprasRequest;
 use App\Http\Requests\UpdateCarritoComprasRequest;
 use App\Models\CarritoCompras;
+use Illuminate\Http\Request;
+use App\Models\registroInmueble;
 
 class CarritoComprasController extends Controller
 {
@@ -120,5 +122,27 @@ class CarritoComprasController extends Controller
         'message'=>'Book not found',
         ],404);
     }
+    }
+    public function GetDatos(Request $request)
+    {
+        $listaId = $request->input('ContenidoCarrito');
+    
+        // Convertimos el string en array y limpiamos espacios
+        $listaId = array_filter(array_map('trim', explode(';', $listaId)));
+    
+        // Buscamos los inmuebles
+        $inmuebles = registroInmueble::whereIn('id', $listaId)->get();
+    
+        if ($inmuebles->isNotEmpty()) {
+            return response()->json([
+                'message' => 'Inmuebles encontrados correctamente',
+                'data' => $inmuebles
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se encontraron inmuebles',
+                'data' => []
+            ], 404);
+        }
     }
 }
