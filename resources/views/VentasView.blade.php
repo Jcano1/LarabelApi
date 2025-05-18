@@ -74,12 +74,11 @@
                         `;
                 } else {
                     container.innerHTML = `
-                            <p class="text-red-600">Error: ${data.message || 'No se pudo obtener el carrito.'}</p>
+                            <p class="text-red-600">Error al conectar con el servidor.</p>
                         `;
                 }
             } catch (error) {
                 container.innerHTML = `<p class="text-red-600">Error al conectar con el servidor.</p>`;
-                console.error(error);
             }
         });
     </script>
