@@ -74,7 +74,7 @@
                         `;
                 } else {
                     container.innerHTML = `
-                            <p class="text-red-600">Error al conectar con el servidor.</p>
+                            <p class="text-black">No tienes ventas</p>
                         `;
                 }
             } catch (error) {
